@@ -12,9 +12,11 @@ app.get("/", (req, res) => {
 });
 
 app.post("/location", async (req, res) => {
-	const { x, y, n, g } = req.body;
-	const geofences = await findGeoFences(BigInt(x), BigInt(y), BigInt(n), BigInt(g));
-	res.json({ offsets: JSONbig.stringify(geofences) });
+	// const { x, y, n, g } = req.body;
+	console.log(JSONbig.parse(req.body.reqdata));
+	const geofences = await findGeoFences(x, y, n, g);
+	console.log(JSONbig.parse(JSONbig.stringify(geofences)));
+	res.json({ offsetStr: JSONbig.stringify(geofences) });
 });
 
 app.listen(PORT, () => {
