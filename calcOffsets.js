@@ -1,6 +1,9 @@
 const { PublicKey } = require("paillier-bigint");
 let geobases = require("./mapbases.json");
 
+const latMultiplier = -1e15;
+const randMultiplier = 1e9;
+
 let bases = geobases.features.map((base) => {
   let coords = base.geometry.coordinates[0];
 
@@ -11,12 +14,12 @@ let bases = geobases.features.map((base) => {
 
     corners: [
       {
-        lng: BigInt(Math.ceil(coords[0][0] * -1e15)),
-        lat: BigInt(Math.ceil(coords[0][1] * -1e15)),
+        lng: BigInt(Math.ceil(coords[0][0] * latMultiplier)),
+        lat: BigInt(Math.ceil(coords[0][1] * latMultiplier)),
       },
       {
-        lng: BigInt(Math.ceil(coords[2][0] * -1e15)),
-        lat: BigInt(Math.ceil(coords[2][1] * -1e15)),
+        lng: BigInt(Math.ceil(coords[2][0] * latMultiplier)),
+        lat: BigInt(Math.ceil(coords[2][1] * latMultiplier)),
       },
     ],
   };
@@ -40,19 +43,19 @@ async function calcOffsets(lat, lng, n, g) {
         name,
         lat1: publicKey.multiply(
           publicKey.plaintextAddition(lat, corners[0].lat),
-          Math.ceil(Math.random() * 1e9)
+          Math.ceil(Math.random() * randMultiplier)
         ),
         lng1: publicKey.multiply(
           publicKey.plaintextAddition(lng, corners[0].lng),
-          Math.ceil(Math.random() * 1e9)
+          Math.ceil(Math.random() * randMultiplier)
         ),
         lat2: publicKey.multiply(
           publicKey.plaintextAddition(lat, corners[1].lat),
-          Math.ceil(Math.random() * 1e9)
+          Math.ceil(Math.random() * randMultiplier)
         ),
         lng2: publicKey.multiply(
           publicKey.plaintextAddition(lng, corners[1].lng),
-          Math.ceil(Math.random() * 1e9)
+          Math.ceil(Math.random() * randMultiplier)
         ),
       };
     });
